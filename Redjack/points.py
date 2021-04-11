@@ -15,37 +15,6 @@ POINTS = {
 	'K': 10
 }
 
-def old_count_score(hand):
-	# start by counting aces in hand
-	num_aces = 0
-	tmp_hand = hand
-	ace = 0
-	for card in tmp_hand:
-		if card.value == 'A':
-			num_aces += 1
-			tmp_hand.remove(card)
-			ace = card
-	
-	# calculate possible scores given hand
-	totals = []
-	non_ace_total = sum([POINTS[x.value] for x in tmp_hand])
-	for i in range(num_aces+1):
-		totals.append(non_ace_total + 1*i + 11*(num_aces - i))
-	
-	# cycle through possible "redjack" cards
-	redjack_scores = []
-	for t in totals:
-		for card in tmp_hand:
-			redjack_scores.append((t - 2*POINTS[card.value], card))
-		if num_aces > 0:
-			redjack_scores.append((t - 2, ace))
-			redjack_scores.append((t - 11, ace))
-	
-	score_list = [x[0] for x in redjack_scores]
-	max_score = max([x for x in score_list if x < 22])
-	red_card = next(x[1] for x in redjack_scores if x[0] == max_score)
-
-	return (max_score, red_card)
 
 def count_score(hand):
 	# start by counting aces in hand
@@ -57,6 +26,17 @@ def count_score(hand):
 			num_aces += 1
 			ace = card
 			tmp_hand.remove(card)
+
+	# handle full hand of aces
+	if tmp_hand == []:
+		if num_aces == 1:
+			return (11, ace)
+		elif num_aces == 2:
+			return (10, ace)
+		elif num_aces == 3:
+			return (21, ace)
+		elif num_aces == 4:
+			return (12, ace)
 	
 	# explore possible red cards
 	non_ace_total = sum([POINTS[card.value] for card in tmp_hand])
