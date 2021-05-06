@@ -17,3 +17,5 @@ This implementation automatically calculates the optimal red card and presents t
 ### How to Play
 
 Once you have the repository available locally, navigate to the Redjack directory and run `python game.py`. Each turn you decide whether you want to "hit" and draw a new card (y/n). The output will update with the situation, drawing cards with the suit and value printed on them. 
+
+![Example of gameplay](Redjack/gameplay.jpg)
